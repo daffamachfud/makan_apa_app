@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.daffa.dicoding.makanapa.makan_apa_app">
    <application
-        android:label="makan_apa_app"
+        android:label="Makan Apa ?"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_app_makanapa">
         <activity
             android:name=".MainActivity"
             android:exported="true"
