@@ -11,7 +11,7 @@ class RestaurantDetailResult {
 
   bool error;
   String message;
-  RestaurantDetail restaurant;
+  RestaurantDetail? restaurant;
 
   factory RestaurantDetailResult.fromJson(Map<String, dynamic> json) =>
       RestaurantDetailResult(
@@ -20,11 +20,15 @@ class RestaurantDetailResult {
         restaurant: RestaurantDetail.fromJson(json["restaurant"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "error": error,
-        "message": message,
-        "restaurant": restaurant.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['error'] = error;
+    data['message'] = message;
+    if (restaurant != null) {
+      data['restaurant'] = restaurant!.toJson();
+    }
+    return data;
+  }
 }
 
 class RestaurantDetail {

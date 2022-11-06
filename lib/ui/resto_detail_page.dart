@@ -35,7 +35,7 @@ class RestoDetailPage extends StatelessWidget {
               ),
             );
           } else if (state.state == ResultState.hasData) {
-            var restaurant = state.result.restaurant;
+            var restaurant = state.result.restaurant!;
             return NestedScrollView(
               headerSliverBuilder: (context, isScrolled) {
                 return [

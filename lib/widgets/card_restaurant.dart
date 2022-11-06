@@ -16,7 +16,6 @@ class CardRestaurant extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print("onresponse press");
         Navigator.pushNamed(context, RestoDetailPage.routeName,
             arguments: restaurant.id);
       },
