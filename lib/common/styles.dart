@@ -6,35 +6,25 @@ const Color secondaryColor = Color(0x0004A912);
 const Color accentColor = Color(0x00EBFFEB);
 const Color yellowTheme = Color(0x00fec31a);
 const Color orangeTheme = Color(0xFFF36A14);
+const Color greyBackgroundTextField = Color(0xFAFAFAEF);
 
-const TextStyle headText1 = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 16,
-  color:Colors.black
-);
+const TextStyle headText1 =
+    TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black);
 
-const TextStyle headText2 = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 14,
-    color:Colors.black
-);
+const TextStyle headText2 =
+    TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black);
 
-const TextStyle descText = TextStyle(
-  fontSize: 12,
-  color: Colors.grey
-);
+const TextStyle descText = TextStyle(fontSize: 12, color: Colors.grey);
 
 final TextTheme myTextTheme = TextTheme(
   headline1: GoogleFonts.inter(
       fontSize: 92, fontWeight: FontWeight.w300, letterSpacing: -1.5),
   headline2: GoogleFonts.inter(
       fontSize: 57, fontWeight: FontWeight.w300, letterSpacing: -0.5),
-  headline3:
-      GoogleFonts.inter(fontSize: 46, fontWeight: FontWeight.w400),
+  headline3: GoogleFonts.inter(fontSize: 46, fontWeight: FontWeight.w400),
   headline4: GoogleFonts.inter(
       fontSize: 32, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-  headline5:
-      GoogleFonts.inter(fontSize: 23, fontWeight: FontWeight.w400),
+  headline5: GoogleFonts.inter(fontSize: 23, fontWeight: FontWeight.w400),
   headline6: GoogleFonts.inter(
       fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 0.15),
   subtitle1: GoogleFonts.inter(
@@ -51,5 +41,4 @@ final TextTheme myTextTheme = TextTheme(
       fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
   overline: GoogleFonts.inter(
       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
-
 );

@@ -3,35 +3,28 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:makan_apa_app/common/styles.dart';
+import 'package:makan_apa_app/data/model/restaurant.dart';
 import 'package:makan_apa_app/widgets/seperator_line.dart';
+import '../ui/resto_detail_page.dart';
 
-class CustomListItem extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String description;
-  final String rating;
-  final String place;
-  final void Function() onTap;
+class CardRestaurant extends StatelessWidget {
+  final Restaurant restaurant;
 
-  const CustomListItem(
-      {Key? key,
-      required this.imageUrl,
-      required this.title,
-      required this.description,
-      required this.rating,
-      required this.place,
-      required this.onTap})
-      : super(key: key);
+  const CardRestaurant({super.key, required this.restaurant});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        print("onresponse press");
+        Navigator.pushNamed(context, RestoDetailPage.routeName,
+            arguments: restaurant.id);
+      },
       child: SizedBox(
         height: 110,
         width: MediaQuery.of(context).size.width,
         child: Padding(
-          padding: EdgeInsets.only(left: 16, right: 16),
+          padding: const EdgeInsets.only(left: 16, right: 16),
           child: Row(
             children: [
               Stack(
@@ -42,7 +35,9 @@ class CustomListItem extends StatelessWidget {
                     height: 100,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(imageUrl, fit: BoxFit.cover),
+                      child: Image.network(
+                          'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
+                          fit: BoxFit.cover),
                     ),
                   ),
                   Positioned(
@@ -65,7 +60,7 @@ class CustomListItem extends StatelessWidget {
                                   size: 18,
                                   color: orangeTheme),
                               Text(
-                                rating,
+                                restaurant.rating.toString(),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 12),
                               )
@@ -82,13 +77,13 @@ class CustomListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      restaurant.name ?? "",
                       style: headText2,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-                    Text(description,
+                    Text(restaurant.description ?? "",
                         maxLines: 1, overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 12),
                     const SeperatorLine(color: Color(0xFFD7D7D7)),
@@ -101,8 +96,13 @@ class CustomListItem extends StatelessWidget {
                                 : Icons.place,
                             color: primaryColor,
                             size: 24),
-                        const SizedBox(width: 4,),
-                        Text(place,style: headText2,)
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          restaurant.city ?? "",
+                          style: headText2,
+                        )
                       ],
                     )
                   ],

@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
+import 'package:makan_apa_app/common/styles.dart';
 import 'package:makan_apa_app/data/model/restaurant.dart';
-import 'package:makan_apa_app/ui/resto_detail_page.dart';
-import 'package:makan_apa_app/widgets/custom_list_item.dart';
+import 'package:makan_apa_app/provider/restaurant_explore_provider.dart';
+import 'package:makan_apa_app/widgets/card_restaurant.dart';
 import 'package:makan_apa_app/widgets/platform_widget.dart';
+import 'package:provider/provider.dart';
 
 class ExplorePage extends StatelessWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -27,42 +30,58 @@ class ExplorePage extends StatelessWidget {
     return CupertinoPageScaffold(child: _buildHomePage(context));
   }
 
-  Widget _buildRestoItem(BuildContext context, RestaurantElement restaurant) {
+  Widget _buildRestoItem(BuildContext context, Restaurant restaurant) {
     return Material(
         child: Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: CustomListItem(
-                imageUrl: restaurant.pictureId,
-                title: restaurant.name,
-                description: restaurant.description,
-                rating: restaurant.rating.toString(),
-                place: restaurant.city,
-                onTap: () {
-                  Navigator.pushNamed(context, RestoDetailPage.routeName,
-                      arguments: restaurant);
-                },
-              ),
-            )));
+                padding: const EdgeInsets.only(bottom: 16),
+                child: CardRestaurant(
+                  restaurant: restaurant,
+                ))));
   }
 
   Widget _buildList(BuildContext context) {
-    return FutureBuilder<String>(
-      future: DefaultAssetBundle.of(context)
-          .loadString('assets/local_restaurant.json'),
-      builder: (context, snapshot) {
-        final List<RestaurantElement> restaurant =
-            parseRestaurant(snapshot.data);
+    return Consumer<RestaurantExploreProvider>(builder: (context, state, _) {
+      if (state.state == ResultState.loading) {
+        return Center(
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Lottie.asset(
+            'assets/animation/menu_loading.json',
+            repeat: true,
+            reverse: false,
+            animate: true,
+          ),
+        ));
+      } else if (state.state == ResultState.hasData) {
         return ListView.builder(
           padding: const EdgeInsets.only(bottom: 24),
-          itemCount: restaurant.length,
+          itemCount: state.result.count,
           itemBuilder: (context, index) {
-            return _buildRestoItem(context, restaurant[index]);
+            return _buildRestoItem(context, state.result.restaurants[index]);
           },
         );
-      },
-    );
+      } else if (state.state == ResultState.noData) {
+        return Center(
+          child: Material(
+            child: Text(state.message),
+          ),
+        );
+      } else if (state.state == ResultState.error) {
+        return Center(
+          child: Material(
+            child: Text(state.message, style: headText1),
+          ),
+        );
+      } else {
+        return const Center(
+          child: Material(
+            child: Text(''),
+          ),
+        );
+      }
+    });
   }
 
   Widget _buildHomePage(BuildContext context) {

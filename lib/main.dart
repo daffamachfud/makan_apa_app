@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:makan_apa_app/common/styles.dart';
-import 'package:makan_apa_app/data/model/restaurant.dart';
 import 'package:makan_apa_app/ui/home_page.dart';
 import 'package:makan_apa_app/ui/resto_detail_page.dart';
 
@@ -17,14 +16,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Makan Apa ?',
       theme: ThemeData(
-        colorScheme:Theme.of(context).colorScheme.copyWith(
-          primary:primaryColor,
-          onPrimary:Colors.black,
-          secondary: secondaryColor,
-          background: Colors.white
-        ),
-        textTheme:myTextTheme,
-        primarySwatch:Colors.lightBlue,
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+            primary: primaryColor,
+            onPrimary: Colors.black,
+            secondary: secondaryColor,
+            background: Colors.white),
+        textTheme: myTextTheme,
+        primarySwatch: Colors.lightBlue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -41,10 +39,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: HomePage.routeName,
       routes: {
-        HomePage.routeName: (context) => HomePage(),
+        HomePage.routeName: (context) => const HomePage(),
         RestoDetailPage.routeName: (context) => RestoDetailPage(
-          restaurant: ModalRoute.of(context)?.settings.arguments as RestaurantElement,
-        ),
+            restaurantId: ModalRoute.of(context)?.settings.arguments as String),
       },
     );
   }
