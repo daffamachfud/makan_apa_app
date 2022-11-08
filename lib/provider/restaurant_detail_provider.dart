@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:makan_apa_app/data/api/api_service.dart';
 import 'package:makan_apa_app/data/model/restaurant_detail.dart';
-import 'package:makan_apa_app/provider/restaurant_explore_provider.dart';
+
+import '../utils/result_state.dart';
 
 class RestaurantDetailProvider extends ChangeNotifier {
   final ApiService apiService;

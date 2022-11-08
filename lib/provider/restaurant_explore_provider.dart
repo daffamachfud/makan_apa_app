@@ -4,8 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:makan_apa_app/data/api/api_service.dart';
 
 import '../data/model/restaurant.dart';
-
-enum ResultState { loading, noData, hasData, error }
+import '../utils/result_state.dart';
 
 class RestaurantExploreProvider extends ChangeNotifier {
   final ApiService apiService;

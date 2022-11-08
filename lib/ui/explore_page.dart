@@ -9,6 +9,8 @@ import 'package:makan_apa_app/widgets/card_restaurant.dart';
 import 'package:makan_apa_app/widgets/platform_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/result_state.dart';
+
 class ExplorePage extends StatelessWidget {
   const ExplorePage({Key? key}) : super(key: key);
 

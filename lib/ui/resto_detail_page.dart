@@ -1,28 +1,28 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:makan_apa_app/common/styles.dart';
 import 'package:makan_apa_app/data/model/drink.dart';
 import 'package:makan_apa_app/data/model/food.dart';
+import 'package:makan_apa_app/data/model/restaurant.dart';
+import 'package:makan_apa_app/provider/restaurant_database_provider.dart';
 import 'package:makan_apa_app/provider/restaurant_detail_provider.dart';
-import 'package:makan_apa_app/provider/restaurant_explore_provider.dart';
 import 'package:provider/provider.dart';
-
 import '../data/api/api_service.dart';
+import '../utils/result_state.dart';
 
 class RestoDetailPage extends StatelessWidget {
   static const routeName = '/resto_detail';
-  final String restaurantId;
+  final Restaurant restaurant;
 
-  const RestoDetailPage({super.key, required this.restaurantId});
+  const RestoDetailPage({super.key, required this.restaurant});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RestaurantDetailProvider>(
         create: (_) => RestaurantDetailProvider(
-            apiService: ApiService(), restaurantId: restaurantId),
+            apiService: ApiService(), restaurantId: restaurant.id),
         child: Scaffold(body:
             Consumer<RestaurantDetailProvider>(builder: (context, state, _) {
           if (state.state == ResultState.loading) {
@@ -36,80 +36,95 @@ class RestoDetailPage extends StatelessWidget {
             );
           } else if (state.state == ResultState.hasData) {
             var restaurant = state.result.restaurant!;
-            return NestedScrollView(
-              headerSliverBuilder: (context, isScrolled) {
-                return [
-                  SliverAppBar(
-                    pinned: true,
-                    expandedHeight: 200,
-                    iconTheme: const IconThemeData(color: Colors.white),
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Image.network(
-                        'https://restaurant-api.dicoding.dev/images/large/${restaurant.pictureId}',
-                        fit: BoxFit.fitWidth,
-                      ),
-                      title: Text(restaurant.name,
-                          style: const TextStyle(color: Colors.white)),
-                      titlePadding: const EdgeInsets.only(left: 48, bottom: 16),
+            return NestedScrollView(headerSliverBuilder: (context, isScrolled) {
+              return [
+                SliverAppBar(
+                  pinned: true,
+                  expandedHeight: 200,
+                  iconTheme: const IconThemeData(color: Colors.white),
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Image.network(
+                      'https://restaurant-api.dicoding.dev/images/large/${restaurant.pictureId}',
+                      fit: BoxFit.fitWidth,
                     ),
-                  )
-                ];
-              },
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                              Platform.isIOS
-                                  ? CupertinoIcons.placemark
-                                  : Icons.place,
-                              color: primaryColor,
-                              size: 24),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(restaurant.city),
-                          const SizedBox(width: 24),
-                          Icon(
-                              Platform.isIOS ? CupertinoIcons.star : Icons.star,
-                              color: orangeTheme,
-                              size: 18),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            restaurant.rating.toString(),
-                            style: headText2,
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        restaurant.description,
-                        style: descText,
-                      ),
-                      const SizedBox(height: 32),
-                      const Text(
-                        "Makanan",
-                        style: headText2,
-                      ),
-                      const SizedBox(height: 18),
-                      _buildListFoodMenu(context, restaurant.menus.foods),
-                      const Text(
-                        "Minuman",
-                        style: headText2,
-                      ),
-                      const SizedBox(height: 18),
-                      _buildListDrinkMenu(context, restaurant.menus.drinks)
-                    ],
+                    title: Text(restaurant.name,
+                        style: const TextStyle(color: Colors.white)),
+                    titlePadding: const EdgeInsets.only(left: 48, bottom: 16),
                   ),
-                ),
-              ),
-            );
+                )
+              ];
+            }, body: Consumer<RestaurantDatabaseProvider>(
+              builder: (context, provider, child) {
+                return FutureBuilder<bool>(
+                  future: provider.isFavorite(restaurant.id),
+                  builder: (context, snapshot) {
+                    var isFavorite = snapshot.data ?? false;
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(
+                                    Platform.isIOS
+                                        ? CupertinoIcons.placemark
+                                        : Icons.place,
+                                    color: primaryColor,
+                                    size: 24),
+                                Text(restaurant.city),
+                                Icon(
+                                    Platform.isIOS
+                                        ? CupertinoIcons.star
+                                        : Icons.star,
+                                    color: orangeTheme,
+                                    size: 18),
+                                Text(
+                                  restaurant.rating.toString(),
+                                  style: headText2,
+                                ),
+                                isFavorite
+                                    ? IconButton(
+                                        onPressed: () => provider
+                                            .deleteFavorite(restaurant.id),
+                                        icon: const Icon(Icons.favorite,color: primaryColor,))
+                                    : IconButton(
+                                        onPressed: () =>
+                                            provider.addFavorite(
+                                              this.restaurant
+                                            ),
+                                        icon: const Icon(Icons.favorite_border,color: primaryColor))
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              restaurant.description,
+                              style: descText,
+                            ),
+                            const SizedBox(height: 32),
+                            const Text(
+                              "Makanan",
+                              style: headText2,
+                            ),
+                            const SizedBox(height: 18),
+                            _buildListFoodMenu(context, restaurant.menus.foods),
+                            const Text(
+                              "Minuman",
+                              style: headText2,
+                            ),
+                            const SizedBox(height: 18),
+                            _buildListDrinkMenu(
+                                context, restaurant.menus.drinks)
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ));
           } else if (state.state == ResultState.noData) {
             return Center(
               child: Material(

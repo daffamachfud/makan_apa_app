@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color primaryColor = Color(0xFFEA1433);
-const Color secondaryColor = Color(0x0004A912);
+const Color secondaryColor = Color(0xFF04A912);
 const Color accentColor = Color(0x00EBFFEB);
 const Color yellowTheme = Color(0x00fec31a);
 const Color orangeTheme = Color(0xFFF36A14);
@@ -41,4 +41,50 @@ final TextTheme myTextTheme = TextTheme(
       fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
   overline: GoogleFonts.inter(
       fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+);
+
+ThemeData lightTheme = ThemeData(
+  colorScheme: ThemeData.light().colorScheme.copyWith(
+      primary: primaryColor,
+      onPrimary: Colors.black,
+      secondary: secondaryColor,
+      background: Colors.white),
+  textTheme: myTextTheme,
+  primarySwatch: Colors.lightBlue,
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: primaryColor,
+      textStyle: const TextStyle(),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(0),
+        ),
+      ),
+    ),
+  ),
+);
+
+ThemeData darkTheme = ThemeData(
+  colorScheme: ThemeData.dark().colorScheme.copyWith(
+      primary: primaryColor,
+      onPrimary: Colors.white,
+      secondary: secondaryColor,
+      background: Colors.black),
+  textTheme: myTextTheme,
+  primarySwatch: Colors.lightBlue,
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: primaryColor,
+      textStyle: const TextStyle(),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(0),
+        ),
+      ),
+    ),
+  ),
 );

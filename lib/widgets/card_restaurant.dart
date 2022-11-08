@@ -17,7 +17,7 @@ class CardRestaurant extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, RestoDetailPage.routeName,
-            arguments: restaurant.id);
+            arguments: restaurant);
       },
       child: SizedBox(
         height: 110,

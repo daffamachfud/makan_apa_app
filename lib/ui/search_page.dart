@@ -8,7 +8,7 @@ import 'package:makan_apa_app/provider/restaurant_search_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../data/model/restaurant.dart';
-import '../provider/restaurant_explore_provider.dart';
+import '../utils/result_state.dart';
 import '../widgets/card_restaurant.dart';
 
 class SearchPage extends StatefulWidget {
