@@ -14,84 +14,84 @@ class FavoritePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RestaurantDatabaseProvider>(
         builder: (context, provider, child) {
-          if (provider.state == ResultState.noData) {
-            return Scaffold(
-                body: Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.only(
-                        top: 48, left: 16, right: 16, bottom: 16),
+      if (provider.state == ResultState.noData) {
+        return Scaffold(
+          body: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 48, left: 16, right: 16, bottom: 16),
+              child: Column(
+                children: [
+                  const Text(
+                    "Favorite",
+                    style: headText1,
+                  ),
+                  const SizedBox(height: 64),
+                  Center(
                     child: Column(
                       children: [
-                        const Text(
-                          "Favorite",
-                          style: headText1,
+                        Image.asset('assets/images/ic_riwayat.png'),
+                        Text(
+                          provider.message,
+                          style: headText2,
                         ),
-                        const SizedBox(height: 64),
-                        Center(
-                          child: Column(
-                            children: [
-                              Image.asset('assets/images/ic_riwayat.png'),
-                              Text(
-                                provider.message,
-                                style: headText2,
-                              ),
-                              const SizedBox(height: 8)
-                            ],
-                          ),
-                        )
+                        const SizedBox(height: 8)
                       ],
                     ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      } else if (provider.state == ResultState.hasData) {
+        return Scaffold(
+          body: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 48, left: 16, right: 16, bottom: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Favorite",
+                    style: headText1,
                   ),
-                ));
-          } else if (provider.state == ResultState.hasData) {
-            return Scaffold(
-                body: Container(
-                    color: Colors.white,
-                    child:
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            top: 48, left: 16, right: 16, bottom: 16),
-                        child:
-                        Column(
-                          children: [
-                            const Text(
-                              "Riwayat",
-                              style: headText1,
-                            ),
-                            const SizedBox(height: 24),
-                            Expanded(
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.only(bottom: 24),
-                                  itemCount: provider.favorites.length,
-                                  itemBuilder: (context, index) {
-                                    return _buildRestoItem(
-                                        context, provider.favorites[index]);
-                                  },
-                                  // )
-                                ),
-                            )
-                          ],
-                        )
-                    )));
-          } else if (provider.state == ResultState.error) {
-            return Center(
-              child: Material(
-                child: Text(provider.message, style: headText1),
+                  const SizedBox(height: 24),
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 24),
+                      itemCount: provider.favorites.length,
+                      itemBuilder: (context, index) {
+                        return _buildRestoItem(
+                            context, provider.favorites[index]);
+                      },
+                    ),
+                  ),
+                ],
               ),
-            );
-          } else {
-            return const Center(
-              child: Material(
-                child: Text(
-                  'Test',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            );
-          }
-        });
+            ),
+          ),
+        );
+      } else if (provider.state == ResultState.error) {
+        return Center(
+          child: Material(
+            child: Text(provider.message, style: headText1),
+          ),
+        );
+      } else {
+        return const Center(
+          child: Material(
+            child: Text(
+              'Test',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        );
+      }
+    });
   }
 
   Widget _buildRestoItem(BuildContext context, Restaurant restaurant) {

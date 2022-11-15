@@ -14,6 +14,12 @@ const TextStyle headText1 =
 const TextStyle headText2 =
     TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black);
 
+const TextStyle headTextTheme1 =
+TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+
+const TextStyle headTextTheme2 =
+TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
+
 const TextStyle descText = TextStyle(fontSize: 12, color: Colors.grey);
 
 final TextTheme myTextTheme = TextTheme(

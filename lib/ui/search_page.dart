@@ -22,6 +22,12 @@ class _SearchPage extends State<SearchPage> {
   TextEditingController controller = TextEditingController();
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final searchRestaurantsState =
         Provider.of<RestaurantSearchProvider>(context);

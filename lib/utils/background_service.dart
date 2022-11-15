@@ -1,8 +1,7 @@
 import 'dart:isolate';
 import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
-
+import 'package:http/http.dart' as http;
 import '../data/api/api_service.dart';
 import '../main.dart';
 import 'notification_helper.dart';
@@ -28,13 +27,20 @@ class BackgroundService {
   }
 
   static Future<void> callback() async {
-    if (kDebugMode) {
-      print('Alarm fired!');
+    try {
+      if (kDebugMode) {
+        print("Alarm Fired !");
+      }
+      final NotificationHelper notificationHelper = NotificationHelper();
+      var result = await ApiService().listExplore(http.Client());
+      await notificationHelper.showNotification(
+          flutterLocalNotificationsPlugin, result);
+    } catch (e) {
+      if (kDebugMode) {
+        print("error");
+        print(e);
+      }
     }
-    final NotificationHelper notificationHelper = NotificationHelper();
-    var result = await ApiService().listExplore();
-    await notificationHelper.showNotification(
-        flutterLocalNotificationsPlugin, result);
 
     _uiSendPort ??= IsolateNameServer.lookupPortByName(_isolateName);
     _uiSendPort?.send(null);

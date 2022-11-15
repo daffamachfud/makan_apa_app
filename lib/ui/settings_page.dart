@@ -24,7 +24,7 @@ class SettingsPage extends StatelessWidget {
                 children: [
                   const Text(
                     settingTitle,
-                    style: headText1,
+                    style: headTextTheme1,
                   ),
                   Expanded(
                     child: _buildList(context),
@@ -50,9 +50,10 @@ class SettingsPage extends StatelessWidget {
         children: [
           Material(
             child: ListTile(
-              title: const Text('Dark Theme',style: headText2,),
+              title: const Text('Dark Theme',style: headTextTheme2,),
               trailing: Switch.adaptive(
                   value: provider.isDarkTheme,
+                  activeColor: secondaryColor,
                   onChanged: (value) {
                     provider.enableDarkTheme(value);
                   }),
@@ -60,11 +61,12 @@ class SettingsPage extends StatelessWidget {
           ),
           Material(
             child: ListTile(
-              title: const Text('Notification Restaurant',style: headText2,),
+              title: const Text('Notification Restaurant',style: headTextTheme2,),
               trailing: Consumer<SchedulingProvider>(
                 builder: (context, scheduled, _) {
                   return Switch.adaptive(
                     value: provider.isNotificationRestaurant,
+                    activeColor: secondaryColor,
                     onChanged: (value) async {
                       if (Platform.isIOS) {
                         customDialog(context);

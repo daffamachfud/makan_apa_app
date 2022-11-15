@@ -1,10 +1,11 @@
 import 'dart:convert';
-
+import 'dart:math';
+import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:makan_apa_app/data/api/api_service.dart';
 import 'package:makan_apa_app/data/model/restaurant.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../common/navigation.dart';
 
 final selectNotificationSubject = BehaviorSubject<String>();
@@ -67,11 +68,16 @@ class NotificationHelper {
       iOS: iOSPlatformChannelSpecifics,
     );
 
+    var restoList = await ApiService().listExplore(http.Client());
+    var restoExploreList = restoList.restaurants.toList();
+    var randomIndex = Random().nextInt(restoExploreList.length);
+    var randomRestaurant = restoExploreList[randomIndex];
+
     var titleNotification = "<b>Mau makan dimana ?</b>";
-    var titleNews = 'jangan jawab terserah, cek disini dong';
+    var bodyNotification = randomRestaurant.name;
 
     await flutterLocalNotificationsPlugin.show(
-        0, titleNotification, titleNews, platformChannelSpecifics,
+        0, titleNotification, bodyNotification, platformChannelSpecifics,
         payload: json.encode(restaurant.toJson()));
   }
 

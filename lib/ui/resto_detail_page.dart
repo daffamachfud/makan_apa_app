@@ -8,8 +8,10 @@ import 'package:makan_apa_app/data/model/food.dart';
 import 'package:makan_apa_app/data/model/restaurant.dart';
 import 'package:makan_apa_app/provider/restaurant_database_provider.dart';
 import 'package:makan_apa_app/provider/restaurant_detail_provider.dart';
+import 'package:makan_apa_app/widgets/card_review.dart';
 import 'package:provider/provider.dart';
 import '../data/api/api_service.dart';
+import '../data/model/category.dart';
 import '../utils/result_state.dart';
 
 class RestoDetailPage extends StatelessWidget {
@@ -89,13 +91,15 @@ class RestoDetailPage extends StatelessWidget {
                                     ? IconButton(
                                         onPressed: () => provider
                                             .deleteFavorite(restaurant.id),
-                                        icon: const Icon(Icons.favorite,color: primaryColor,))
+                                        icon: const Icon(
+                                          Icons.favorite,
+                                          color: primaryColor,
+                                        ))
                                     : IconButton(
-                                        onPressed: () =>
-                                            provider.addFavorite(
-                                              this.restaurant
-                                            ),
-                                        icon: const Icon(Icons.favorite_border,color: primaryColor))
+                                        onPressed: () => provider
+                                            .addFavorite(this.restaurant),
+                                        icon: const Icon(Icons.favorite_border,
+                                            color: primaryColor))
                               ],
                             ),
                             const SizedBox(height: 16),
@@ -116,7 +120,15 @@ class RestoDetailPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 18),
                             _buildListDrinkMenu(
-                                context, restaurant.menus.drinks)
+                                context, restaurant.menus.drinks),
+                            const SizedBox(height: 18),
+                            const Text(
+                              "Apa kata orang ?",
+                              style: headText2,
+                            ),
+                            const SizedBox(height: 18),
+                            _buildListCustomerReview(
+                                context, restaurant.customerReviews)
                           ],
                         ),
                       ),
@@ -199,5 +211,27 @@ class RestoDetailPage extends StatelessWidget {
         leading: Image.asset('assets/images/bg_drink.png'),
         title: Text(drink.name,
             style: headText1, maxLines: 1, overflow: TextOverflow.ellipsis));
+  }
+
+  Widget _buildListCustomerReview(
+      BuildContext context, List<CustomerReview> listCustomerReview) {
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      padding: const EdgeInsets.only(bottom: 16),
+      itemCount: listCustomerReview.length,
+      itemBuilder: (context, index) {
+        return _buildCustomerReview(context, listCustomerReview[index]);
+      },
+    );
+  }
+
+  Widget _buildCustomerReview(
+      BuildContext context, CustomerReview customerReview) {
+    return
+      Material(
+        child:
+        CardReview(customerReview: customerReview)
+      );
   }
 }
